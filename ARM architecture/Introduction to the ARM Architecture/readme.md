@@ -36,7 +36,8 @@ The ARM architecture is a dominant force in various market segments due to its s
   - IRQ, normal interrupt
   - FIQ, fast interrupt.
 - **Banked Registers**: Specific registers for each exception mode.
-Exception process: When an exception occurs, the ARM processor halts execution in a defined manner and begins execution at
+#### `Exception process`:
+When an exception occurs, the ARM processor halts execution in a defined manner and begins execution at
 one of a number of fixed addresses in memory, known as the exception vectors. There is a separate vector location for each exception, including reset.<br>
 An operating system installs a handler on every exception at initialization. Privileged tasks are normally run in System mode to allow exceptions to occur without state loss as the same registers are used. This is because System mode uses the same registers as User mode, rather than a separate set of privileged registers.
 
