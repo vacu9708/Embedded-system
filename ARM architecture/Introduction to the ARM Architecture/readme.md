@@ -51,8 +51,3 @@ Broadly categorized into:
 
 ## Thumb Instruction Set (A1.3)
 - A 16-bit subset of the 32-bit ARM instruction set, offering code density improvements.
-
----
-
-This document provides a detailed overview of the ARM architecture, highlighting its evolution, key features, and instruction sets. The ARM architecture's balance between performance, power efficiency, and size makes it a versatile choice for various applications.
-
