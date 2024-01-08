@@ -1,51 +1,75 @@
-## Detailed ARM Architecture Study Notes
+# ARM Architecture Overview
 
-### 1. ARM Architecture Fundamentals
-- **Type:** Reduced Instruction Set Computer (RISC).
-- **Key Attributes:** Small implementation size, high performance, low power consumption.
-- **Distinctive Features:**
-  - Uniform register file.
-  - Load/store architecture: Data-processing operations only on register contents.
-  - Simple addressing modes: Load/store addresses from register contents and instruction fields.
-  - Uniform, fixed-length instruction fields for easy decode.
+## 1. Introduction to ARM Architecture
+ARM architecture is widely used due to its simplicity, efficiency in performance, and low power consumption. Key attributes include:
 
-### 2. ARM Registers
-- **General Overview:** 31 general-purpose 32-bit registers; 16 visible at any time.
-- **User Mode Registers:** Used by unprivileged code.
+- **Reduced Instruction Set Computer (RISC) Features:**
+  - Large uniform register file.
+  - Load/store architecture.
+  - Simple addressing modes.
+  - Uniform and fixed-length instruction fields.
+
+- **ARM-Specific Enhancements:**
+  - Control over ALU and shifter.
+  - Auto-increment and auto-decrement addressing modes.
+  - Load and Store Multiple instructions.
+  - Conditional execution of almost all instructions.
+
+- **Balance in Design:**
+  - High performance.
+  - Small code size.
+  - Low power consumption.
+  - Small silicon area.
+
+### A1.1.1 ARM Registers
+- **General-Purpose Registers:**
+  - 31 general-purpose 32-bit registers.
+  - 16 visible at any time.
+
 - **Special Registers:**
-  - R13: Stack Pointer (SP).
-  - R14: Link Register (LR) - holds return address for subroutines.
-  - R15: Program Counter (PC) - points to the instruction two ahead of the current instruction.
-- **Additional States:** Supports Thumb® and Jazelle® states.
-- **System Mode:** For privileged tasks, with access to full functionality.
+  - Stack Pointer (R13).
+  - Link Register (R14).
+  - Program Counter (R15).
 
-### 3. ARM Instruction Set
-- **Instruction Classes:**
-  - **Branch Instructions:** Standard Branch with 24-bit signed word offset; Branch and Link (BL) to store return address in LR.
-  - **Data-Processing Instructions:** Arithmetic/logic operations, comparison, SIMD operations, multiply, and miscellaneous.
-  - **Status Register Transfer Instructions:** Transfer between CPSR/SPSR and general-purpose registers.
-  - **Load/Store Instructions:** Various sizes and addressing modes, including Load/Store Register and Multiple Register.
-  - **Coprocessor Instructions:** For internal operations, data transfers, and register transfers.
-  - **Exception-Generating Instructions:** SWI for software interrupts and BKPT for breakpoints.
+- **Processor States:**
+  - Thumb state.
+  - Jazelle state.
 
-### 4. Data-Processing Instructions
-- **Arithmetic/Logic Instructions:** Two source operands, optional condition code flags update.
-- **Comparison Instructions:** Similar to arithmetic/logic but without writing results to registers.
-- **SIMD Instructions:** Parallel processing of 16-bit or 8-bit numbers, available in ARMv6.
-- **Multiply Instructions:** Several classes for different multiplication operations.
+### A1.1.2 Exceptions
+- Seven types of exceptions.
+- Different privileged processing modes for each exception.
+- Specific banked registers for fast interrupt processing.
 
-### 5. Load and Store Instructions
-- **Load and Store Register:** For 64-bit, 32-bit, 16-bit, and 8-bit data; supports unaligned loads/stores from ARMv6.
-- **Addressing Modes:** Offset, pre-indexed, and post-indexed.
-- **Load and Store Multiple Registers:** Efficient for subroutine entry/exit and block copies.
-- **Exclusive Instructions:** For cooperative memory synchronization.
+### A1.1.3 Status Registers
+- **Current Program Status Register (CPSR):**
+  - Contains condition code flags, interrupt disable bits, processor mode, and state.
 
-### 6. Exceptions and Status Registers
-- **Exception Types:** Reset, Undefined instruction, SWI, Prefetch Abort, Data Abort, IRQ, FIQ.
-- **Status Registers:** 
-  - **CPSR:** Holds current operating status, condition code flags, interrupt disable bits, processor mode/state.
-  - **SPSR:** Saves CPSR status before an exception.
+- **Saved Program Status Register (SPSR):**
+  - Holds the CPSR of the task before the exception occurred.
 
-### 7. Thumb Instruction Set
-- **Characteristics:** 16-bit encoding, a subset of the ARM instruction set.
-- **Benefits:** More efficient execution and smaller code size, suitable for smaller systems.
+## 2. ARM Instruction Set
+### A1.2.1 Branch Instructions
+- Standard Branch instruction with a 24-bit signed word offset.
+- Branch and Link (BL) instructions for subroutine calls.
+
+### A1.2.2 Data-Processing Instructions
+- Arithmetic/logic instructions.
+- Comparison instructions.
+- Single Instruction Multiple Data (SIMD) instructions.
+- Multiply instructions.
+- Miscellaneous Data Processing instructions.
+
+### A1.2.3 Status Register Transfer Instructions
+- Transfer contents of CPSR or an SPSR to/from a general-purpose register.
+
+### A1.2.4 Load and Store Instructions
+- Different types of load and store instructions, including Load and Store Register, Load and Store Multiple registers, and Load and Store Register Exclusive.
+
+### A1.2.5 Coprocessor Instructions
+- Data-processing, data transfer, and register transfer instructions for coprocessor interaction.
+
+### A1.2.6 Exception-Generating Instructions
+- Software interrupt instructions (SWI) and Software breakpoint instructions (BKPT).
+
+## 3. Thumb Instruction Set
+- A 16-bit subset of the ARM instruction set for more compact code.
