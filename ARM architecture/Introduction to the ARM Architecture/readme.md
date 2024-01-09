@@ -32,7 +32,7 @@
 #### `Exception process`:
 When an exception occurs, the ARM processor halts execution in a defined manner and begins execution at
 one of a number of fixed addresses in memory, known as the exception vectors. There is a separate vector location for each exception, including reset.<br>
-An operating system installs a handler on every exception at initialization. Privileged tasks are normally run in System mode to allow exceptions to occur without state loss as the same registers are used. This is because System mode uses the same registers as User mode, rather than a separate set of privileged registers.
+An operating system installs a handler on every exception at initialization. Privileged tasks are normally run in System mode to allow exceptions to occur without state loss. This is because System mode uses the same registers as User mode, rather than a separate set of privileged registers.
 
 ## A1.1.3 Status Registers
 ![image](https://github.com/vacu9708/Embedded-system/assets/67142421/a8d11d29-e894-4dab-aa30-fa40bdaacdd0)
