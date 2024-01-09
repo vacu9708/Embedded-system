@@ -35,6 +35,8 @@ one of a number of fixed addresses in memory, known as the exception vectors. Th
 An operating system installs a handler on every exception at initialization. Privileged tasks are normally run in System mode to allow exceptions to occur without state loss as the same registers are used. This is because System mode uses the same registers as User mode, rather than a separate set of privileged registers.
 
 ## A1.1.3 Status Registers
+![image](https://github.com/vacu9708/Embedded-system/assets/67142421/a8d11d29-e894-4dab-aa30-fa40bdaacdd0)
+
 - **Current Program Status Register (CPSR):** Holds processor status, condition code flags, interrupt disable bits, processor mode, etc.
 - **Saved Program Status Register (SPSR):** Holds the CPSR of the task before an exception occurred.
 
