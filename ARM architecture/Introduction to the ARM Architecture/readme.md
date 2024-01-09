@@ -31,16 +31,10 @@ performance, small code size, low power consumption, and small silicon area.
   - Data Abort, a data access memory abort
   - IRQ, Interrupt request
   - FIQ, Fast interrupt request
-
 - **Exception Modes and Banked Registers**:
-  - Standard Registers and Exceptions: When an exception occurs, standard registers are replaced with registers specific to the exception mode.
-  - Banked Registers for All Exception Modes: All exception modes have replacement banked registers for R13 (stack pointer) and R14 (link register).
-- **Specifics of Fast Interrupt Mode**:
-  - Additional Banked Registers: Fast interrupt mode has banked registers for R8 to R12, in addition to R13 and R14.
-  - Purpose: These additional banked registers allow fast interrupt processing to begin without the need to save or restore these registers.
-- **Behavior of Registers during Exceptions**:
-  - R14 (Link Register): When entering an exception handler, R14 holds the return address for exception processing. It is used to return after processing the exception and to address the instruction that caused the exception.
-  - R13 (Stack Pointer): Register 13 is banked across different exception modes, providing each exception handler with a private stack pointer.
+All exception modes have replacement banked registers. When an exception occurs, standard registers are replaced with registers specific to the exception mode.<br>
+The fast interrupt mode has additional banked registers for fast interrupt processing.<br>
+
 #### `Exception process`:
 When an exception occurs, the ARM processor halts execution in a defined manner and begins execution at
 one of a number of fixed addresses in memory, known as the exception vectors. There is a separate vector location for each exception, including reset.<br>
