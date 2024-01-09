@@ -1,5 +1,3 @@
-# Introduction to the ARM Architecture
-
 ## A1.1 About the ARM architecture
 
 ### Key Characteristics
