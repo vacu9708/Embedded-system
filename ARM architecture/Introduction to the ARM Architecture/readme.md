@@ -19,7 +19,7 @@ performance, small code size, low power consumption, and small silicon area.
 - **General-Purpose Registers:** 31 general-purpose 32-bit registers, 16 visible at any time. These 16 registerse are User mode registers.
 - **Special Roles:**
   - **Stack Pointer (R13):** Used for stack operations.
-  - **Link Register (R14):** Holds return address after a subroutine call. This is more efficient than using a call stack for every function call, which INTEL uses.
+  - **Link Register (R14):** Holds return address after a subroutine call.
   - **Program Counter (PC, R15):** Points to next's next instruction of the current instruction being executed.
 
 ## A1.1.2 Exceptions
