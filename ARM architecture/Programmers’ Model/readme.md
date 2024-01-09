@@ -1,0 +1,99 @@
+![image](https://github.com/vacu9708/Embedded-system/assets/67142421/f2c3a4f6-4b76-4603-b0bf-7928190fcaf6)# Programmers' Model
+
+## A2.1 Data Types
+- **Byte (8 bits):** Smallest data type.
+- **Halfword (16 bits):** Introduced in ARM version 4.
+- **Word (32 bits):** Main data type for operations.
+- **Support for Unaligned Data:** ARMv6 introduced unaligned data support for words and halfwords.
+- **Signed and Unsigned Types:** Represent integers using normal binary format or two's complement format.
+
+## A2.2 Processor Modes
+![image](https://github.com/vacu9708/Embedded-system/assets/67142421/f5629faf-1c3b-4986-9b55-c75fdfc76cc1)<br>
+- **Mode changes**: Can be made under software control, or can be caused by external interrupts or exceptions.<br>
+- **User mode**: Most application programs run in User mode, which cannot access protected system resources or to change mode, other than triggering an exception.<br>
+- **Privileged modes**: The modes other than User mode are known as privileged modes. They have full access to system resources and can change mode freely.<br>
+Five of them are known as exception modes: FIQ, IRQ, Supervisor, Abort, Undefined. These are entered when specific exceptions occur. Each of them has some additional registers to avoid
+corrupting User mode state when the exception occurs.
+- **System mode**: Privileged tasks are normally run in System mode to allow exceptions to occur without state loss. This is because System mode uses the same registers as User mode, rather than a separate set of privileged registers.
+
+## A2.3 Registers
+- Total of 37 registers
+  - 31 general-purpose registers
+  - 1 program counter
+  - 6 status registers
+- Registers arranged in overlapping banks, with the current processor mode controlling which bank is available
+
+### A2.4 General-purpose Registers (R0 to R15)
+- **Unbanked Registers (R0 to R7 and R15)**: Each of them refers to the same 32-bit physical register in all processor modes. They are completely general-purpose registers, with no special uses implied by the architecture
+- **Banked Registers (R8 to R14)**: Different physical registers depending on the processor mode. Where a particular physical register is intended, a more specific name is used.<br>
+Almost all instructions allow the banked registers to be used wherever a general-purpose register is allowed.
+
+### Special Uses of these registers
+- R13 (Stack Pointer): Used for stack operations.
+- R14 (Link Register): Holds return address after a subroutine call. This is more efficient than using a call stack for every function call, which INTEL uses.
+- R15 (Program Counter): R15 can be used in place of other general-purpose registers for certain special-case effects.<br>
+By default, R15 operates as a program counter, used for reading or writing the address of the next's next instruction.<br>
+This is due to the pipeline architecture of ARM processors, where instructions are pre-fetched.<br>
+
+
+## A2.5 Program Status Registers
+The Current Program Status Register (CPSR) is accessible in all processor modes. It contains condition code flags, interrupt disable bits, the current processor mode, and other status and control information.<br>
+Each exception mode also has a Saved Program Status Register (SPSR), that is used to preserve the value of the CPSR when the associated exception occurs.<br>
+
+### A2.5.1 Types of PSR bits
+![image](https://github.com/vacu9708/Embedded-system/assets/67142421/62c15732-41b0-4431-8a3c-22fc6feb9cb8)<br>
+- **Reserved bits**: Reserved for future expansion. Implementations must read these bits as 0 and ignore writes to them.
+- **User-writable bits(N, Z, C, V, Q, GE[3:0], E)**: Can be written from any mode.
+- **Privileged bits(A, I, F, and M[4:0])**: Can be written from any privileged mode. Writes to privileged bits in User mode are ignored.
+- **Execution state bits(J, T)**: Can be written from any privileged mode. Writes to execution state bits in User mode are ignored. They are always zero in ARM state.
+
+### A2.5.2 The condition code flags
+The N, Z, C, and V (Negative, Zero, Carry and oVerflow) bits are collectively known as the condition code flags, often referred to as flags.<br>
+The condition code flags in the CPSR can be tested by most instructions to determine whether the instruction is to be executed.(if else)<br>
+#### The condition flags are usually modified by:
+- Execution of a comparison instruction (CMN, CMP, TEQ or TST).
+- Execution of some other arithmetic, logical or move instruction.
+#### The flags can be modified in these additional ways:
+- Execution of an MSR instruction.
+- Execution of MRC instructions with destination register R15.
+- Execution of some variants of the LDM instruction.
+- Execution of an RFE instruction in a privileged mode that loads a new value into the CPSR from
+memory.
+- Execution of flag-setting variants of arithmetic and logical instructions whose destination register is
+R15. These also copy the SPSR to the CPSR, and are intended for returning from exceptions.
+
+### A2.5.3 The Q flag
+it[27] of the CPSR is known as the Q flag and is used to indicate whether overflow and/or saturation has occurred in some DSP-oriented instructions.<br>
+
+### A2.5.4 The GE[3:0] bits
+The SIMD instructions use bits[19:16] as Greater than or Equal (GE) flags for individual bytes or halfwords of the result.<br>
+You can use these flags to control a later SEL instruction<br>
+
+### A2.5.5 The E bit
+Controls load and store endianness for data handling.<br>
+
+### A2.5.6 The interrupt disable bits
+- **A bit**: Disables imprecise data aborts when it is set. This is available only in ARMv6 and above. In earlier versions, bit[8] of CPSR and SPSRs must be treated as a reserved bit, as described in Types of PSR bits on page A2-11.
+I bit Disables IRQ interrupts when it is set.
+F bit Disables FIQ interrupts when it is set.
+
+### A2.5.7 The mode bits
+M[4:0] are the mode bits. These determine the mode in which the processor operates.<br>
+![image](https://github.com/vacu9708/Embedded-system/assets/67142421/c8ce20f3-44b9-4d2f-8eb8-646f2ba047a4)<br>
+
+### A2.5.8 The T and J bits
+![image](https://github.com/vacu9708/Embedded-system/assets/67142421/c46e77e9-2693-4351-b576-62c73d8edc3a)<br>
+The T and J bits select the current instruction set, as shown in Table A2-3.
+
+### A2.5.9 Other bits
+Other bits in the program status registers are reserved for future expansion.<br>
+In general, programmers must take care to write code in such a way that these bits are never modified. Failure to do this might result in code that has unexpected side effects on future versions of the architecture.
+
+## A2.6 Exceptions
+Exceptions are generated by internal and external sources to cause the processor to handle an event, such as an externally generated interrupt or an attempt to execute an Undefined instruction.<br>
+The processor state just before handling the exception is normally preserved so that the original program can be resumed when the exception routine has completed.<br>
+More than one exception can arise at the same time.<br>
+#### `Types of exceptions`
+The ARM architecture supports seven types of exception. Table A2-4 lists the types of exception and the processor mode that is used to process each type.<br>
+When an exception occurs, execution is forced from a fixed memory address corresponding to the type of exception. These fixed addresses are called the **exception vectors**.<br>
+![image](https://github.com/vacu9708/Embedded-system/assets/67142421/8f983210-851f-4d21-abf1-833acaa9c486)<br>
