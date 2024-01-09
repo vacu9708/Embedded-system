@@ -31,8 +31,8 @@ performance, small code size, low power consumption, and small silicon area.
   - software interrupt (SWI) instructions, can be used to make a call to an operating system
   - Prefetch Abort, an instruction fetch memory abort
   - Data Abort, a data access memory abort
-  - IRQ, normal interrupt
-  - FIQ, fast interrupt.
+  - IRQ, Interrupt request
+  - FIQ, Fast interrupt request
 
 - **Exception Modes and Banked Registers**:
   - Standard Registers and Exceptions: When an exception occurs, standard registers are replaced with registers specific to the exception mode.
