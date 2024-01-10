@@ -57,7 +57,7 @@ memory.
 - Execution of flag-setting variants of arithmetic and logical instructions whose destination register is
 R15. These also copy the SPSR to the CPSR, and are intended for returning from exceptions.
 ### The Q flag
-it[27] of the CPSR is known as the Q flag and is used to indicate whether overflow and/or saturation has occurred in some DSP-oriented instructions.<br>
+bit[27] of the CPSR is known as the Q flag and is used to indicate whether overflow and/or saturation has occurred in some DSP-oriented instructions.<br>
 ### The GE[3:0] bits
 The SIMD instructions use bits[19:16] as Greater than or Equal (GE) flags for individual bytes or halfwords of the result.<br>
 You can use these flags to control a later SEL instruction<br>
