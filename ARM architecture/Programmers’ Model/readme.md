@@ -129,7 +129,7 @@ The FIQ exception is generated externally by asserting the FIQ input on the proc
 Endianness is the order of bytes of digital data.<br>
 ARMv6 supports both big-endian and little-endian operation<br>
 (Least Significant bit: the bit that has the lowest value)
-- In little-endian mode, the least significant bit is stored at the smallest address.
+- In little-endian mode, the least significant bit is stored at the smallest address. (most common)
 - In big-endian mode, the most significant bit is stored at the smallest address.
 
 ## Unaligned access support
@@ -150,3 +150,12 @@ ARMv6 introduced support for unaligned word and halfword data access.
 - If, however, another thread has written to the location, the STREX operation will fail, returning a non-zero value.
 #### Typical Usage in a Loop:
 In practice, the thread often repeatedly reads (LDREX) and tries to write (STREX) in a loop until STREX reports success (indicating no other writes occurred in the meantime).
+
+## Jazelle extension
+- **Background**: Jazelle was introduced to mitigate the overheads of JVM by allowing for the native execution of Java bytecode.
+- **Operation**: When in Jazelle mode, the processor can directly execute Java bytecode instructions. This is achieved by mapping Java bytecodes to equivalent ARM processor instructions or sequences of instructions.
+- **Decline of Jazelle**: The advancements in JIT have largely overshadowed the need for direct bytecode execution.
+
+## Saturated integer arithmetic
+Saturated arithmetic prevents the overflow/underflow of typical integer arithmetic. Instead, if an operation results in a value outside the representable range, it is set to the closest representable value (the maximum or minimum value of the data type).
+- **For instance**, in 8-bit saturated arithmetic, if adding two numbers results in a value greater than 255, the result is set to 255. Similarly, if subtraction would result in a negative value, the result is set to 0.
