@@ -20,7 +20,7 @@ corrupting User mode state when the exception occurs.
 - Total of 37 registers
   - 31 general-purpose 32-bit registers, including a program counter. R0 ~ R15 visible at any time. (The PC is no longer treated as a general-purpose register in ARMv8 or later)
   - 6 status registers
-### General-purpose Registers
+### General-purpose registers
 - **Unbanked Registers (R0 to R7 and R15)**: Each of them refers to the same 32-bit physical register in all processor modes. They are completely general-purpose registers, with no special uses implied by the architecture
 - **Banked Registers (R8 to R14)**: Different physical registers depending on the processor mode. A specific name is used to point to a particular physical register.
   - Almost all instructions allow the banked registers to be used wherever a general-purpose register is allowed.
