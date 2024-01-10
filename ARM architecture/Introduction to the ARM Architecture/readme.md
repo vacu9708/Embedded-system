@@ -20,11 +20,9 @@ performance, small code size, low power consumption, and small silicon area.
 Coprocessors can be attached to the ARM processor. A coprocessor extends the processing features of a core by extending the instruction set or by providing configuration registers.
 
 ## A1.1.1 ARM Registers
-- **General-Purpose Registers:** 31 general-purpose 32-bit registers, 16 visible at any time. These 16 registerse are User mode registers.
-- **Special Roles:**
-  - **Stack Pointer (R13):** Used for stack operations.
-  - **Link Register (R14):** Holds return address after a subroutine call.
-  - **Program Counter (R15(PC)):** Points to next's next instruction of the current instruction being executed.
+- Total of 37 registers
+  - 31 general-purpose 32-bit registers, including a program counter. R0 ~ R15 visible at any time.
+  - 6 status registers
 
 ## A1.1.2 Exceptions
 - **Types of Exceptions:**
@@ -35,9 +33,6 @@ Coprocessors can be attached to the ARM processor. A coprocessor extends the pro
   - Data Abort, a data access memory abort
   - IRQ, Interrupt request
   - FIQ, Fast interrupt request
-- **Exception Modes and Banked Registers**:
-All exception modes have replacement banked registers. When an exception occurs, standard registers are replaced with registers specific to the exception mode.<br>
-The fast interrupt mode has additional banked registers for fast interrupt processing.<br>
 
 ## A1.1.3 Status Registers
 ![image](https://github.com/vacu9708/Embedded-system/assets/67142421/a8d11d29-e894-4dab-aa30-fa40bdaacdd0)<br>
@@ -46,7 +41,6 @@ All processor state other than the general-purpose register contents is held in 
 - **Saved Program Status Register (SPSR):** Holds the CPSR of the task before an exception occurred. (Each exception mode has SPSR) 
 
 ## A1.2 ARM Instruction Set
-
 ### Classification
 1. **Branch Instructions**
 2. **Data-Processing Instructions**
