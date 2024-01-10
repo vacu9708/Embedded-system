@@ -31,6 +31,7 @@ corrupting User mode state when the exception occurs.
 - R15 (Program Counter): R15 can be used in place of other general-purpose registers for certain special-case effects.<br>
 By default, R15 operates as a program counter, used for reading or writing the address of the next's next instruction.<br>
 This is due to the pipeline architecture of ARM processors, where instructions are pre-fetched.<br>
+![image](https://github.com/vacu9708/Embedded-system/assets/67142421/c4274b11-1a5f-4e1d-bbe9-49a0cfdbf5b2)<br>
 
 ## Program Status Registers
 The Current Program Status Register (CPSR) is accessible in all processor modes. It contains condition code flags, interrupt disable bits, the current processor mode, and other status and control information.<br>
