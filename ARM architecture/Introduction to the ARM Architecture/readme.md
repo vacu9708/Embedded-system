@@ -15,12 +15,15 @@
 These enhancements to a basic RISC architecture allow ARM processors to achieve a good balance of high
 performance, small code size, low power consumption, and small silicon area.
 
+### Coprocessor
+Coprocessors can be attached to the ARM processor. A coprocessor extends the processing features of a core by extending the instruction set or by providing configuration registers.
+
 ## A1.1.1 ARM Registers
 - **General-Purpose Registers:** 31 general-purpose 32-bit registers, 16 visible at any time. These 16 registerse are User mode registers.
 - **Special Roles:**
   - **Stack Pointer (R13):** Used for stack operations.
   - **Link Register (R14):** Holds return address after a subroutine call.
-  - **Program Counter (PC, R15):** Points to next's next instruction of the current instruction being executed.
+  - **Program Counter (R15(PC)):** Points to next's next instruction of the current instruction being executed.
 
 ## A1.1.2 Exceptions
 - **Types of Exceptions:**
