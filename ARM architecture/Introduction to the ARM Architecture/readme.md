@@ -35,11 +35,6 @@ performance, small code size, low power consumption, and small silicon area.
 All exception modes have replacement banked registers. When an exception occurs, standard registers are replaced with registers specific to the exception mode.<br>
 The fast interrupt mode has additional banked registers for fast interrupt processing.<br>
 
-#### `Exception process`:
-When an exception occurs, the ARM processor halts execution in a defined manner and begins execution at
-one of a number of fixed addresses in memory, known as the exception vectors. There is a separate vector location for each exception, including reset.<br>
-An operating system installs a handler on every exception at initialization. Privileged tasks are normally run in System mode to allow exceptions to occur without state loss. This is because System mode uses the same registers as User mode, rather than a separate set of privileged registers.
-
 ## A1.1.3 Status Registers
 ![image](https://github.com/vacu9708/Embedded-system/assets/67142421/a8d11d29-e894-4dab-aa30-fa40bdaacdd0)<br>
 All processor state other than the general-purpose register contents is held in status registers.
