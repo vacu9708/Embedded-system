@@ -33,7 +33,6 @@ Almost all instructions allow the banked registers to be used wherever a general
 By default, R15 operates as a program counter, used for reading or writing the address of the next's next instruction.<br>
 This is due to the pipeline architecture of ARM processors, where instructions are pre-fetched.<br>
 
-
 ## Program Status Registers
 The Current Program Status Register (CPSR) is accessible in all processor modes. It contains condition code flags, interrupt disable bits, the current processor mode, and other status and control information.<br>
 Each exception mode also has a Saved Program Status Register (SPSR), that is used to preserve the value of the CPSR when the associated exception occurs.<br>
@@ -118,6 +117,7 @@ FIQ is designed to support a data transfer or channel process.<br>
 - `Why fast interrupt is faster`
   - **Dedicated Registers:**: FIQ has sufficient private registers to remove the need for register saving in such applications, therefore minimizing the overhead of context switching.
   - **Shorter vector**: There are fewer instructions to process before the ISR code is reached.
+  - **Higher Priority**: FIQ has a higher priority than IRQ 
 
 ## Endian
 Endianness is the order of bytes of digital data.<br>
