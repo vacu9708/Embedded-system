@@ -17,6 +17,7 @@ corrupting User mode state when the exception occurs.
 - **System mode**: System mode is one of the privileged modes, and it shares the same register set as the User mode. It has full access to the system's privileged resources.
 
 ## Registers
+![image](https://github.com/vacu9708/Embedded-system/assets/67142421/c4274b11-1a5f-4e1d-bbe9-49a0cfdbf5b2)<br>
 - Total of 37 registers
   - 31 general-purpose 32-bit registers, including a program counter. R0 ~ R15 visible at any time. (The PC is no longer treated as a general-purpose register in ARMv8 or later)
   - 6 status registers
@@ -24,14 +25,15 @@ corrupting User mode state when the exception occurs.
 - **Unbanked Registers (R0 to R7 and R15)**: Each of them refers to the same 32-bit physical register in all processor modes. They are completely general-purpose registers, with no special uses implied by the architecture
 - **Banked Registers (R8 to R14)**: Different physical registers depending on the processor mode. A specific name is used to point to a particular physical register.
   - Almost all instructions allow the banked registers to be used wherever a general-purpose register is allowed.
-  - Some of the banked registers are unique to the mode, while others are shared (or overlapped) with other modes.
+  - Some of the banked registers are unique to the mode, while others are shared (or overlapped) with other modes:<br>
+    - Registers R8 to R12 have two banked physical registers each. One is used in all processor modes other than FIQ mode, and the other is used in FIQ mode.<br>
+    - Registers R13 and R14 have six banked physical registers each. One is used in User and System modes, and each of the remaining five is used in one of the five exception modes. 
 ### Special Uses of these registers
 - R13 (Stack Pointer): Used for stack operations.
 - R14 (Link Register): Holds return address after a subroutine call. This is more efficient than using a call stack for every function call, which INTEL uses.
 - R15 (Program Counter): R15 can be used in place of other general-purpose registers for certain special-case effects.<br>
 By default, R15 operates as a program counter, used for reading or writing the address of the next's next instruction.<br>
 This is due to the pipeline architecture of ARM processors, where instructions are pre-fetched.<br>
-![image](https://github.com/vacu9708/Embedded-system/assets/67142421/c4274b11-1a5f-4e1d-bbe9-49a0cfdbf5b2)<br>
 
 ## Program Status Registers
 The Current Program Status Register (CPSR) is accessible in all processor modes. It contains condition code flags, interrupt disable bits, the current processor mode, and other status and control information.<br>
