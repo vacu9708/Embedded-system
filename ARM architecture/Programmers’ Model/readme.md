@@ -1,13 +1,13 @@
 # Programmers' Model
 
-## A2.1 Data Types
+## Data Types
 - **Byte (8 bits):** Smallest data type.
 - **Halfword (16 bits):** Introduced in ARM version 4.
 - **Word (32 bits):** Main data type for operations.
 - **Support for Unaligned Data:** ARMv6 introduced unaligned data support for words and halfwords.
 - **Signed and Unsigned Types:** Represent integers using normal binary format or two's complement format.
 
-## A2.2 Processor Modes
+## Processor Modes
 ![image](https://github.com/vacu9708/Embedded-system/assets/67142421/f5629faf-1c3b-4986-9b55-c75fdfc76cc1)<br>
 - **Mode changes**: Can be made under software control, or can be caused by external interrupts or exceptions.<br>
 - **User mode**: Most application programs run in User mode, which cannot access protected system resources or to change mode, other than triggering an exception.<br>
@@ -16,14 +16,14 @@ Five of them are known as exception modes: FIQ, IRQ, Supervisor, Abort, Undefine
 corrupting User mode state when the exception occurs.
 - **System mode**: System mode is one of the privileged modes, and it shares the same register set as the User mode. It has full access to the system's privileged resources.
 
-## A2.3 Registers
+## Registers
 - Total of 37 registers
   - 31 general-purpose registers
   - 1 program counter
   - 6 status registers
 - Registers arranged in overlapping banks, with the current processor mode controlling which bank is available
 
-### A2.4 General-purpose Registers (R0 to R15)
+### General-purpose Registers (R0 to R15)
 - **Unbanked Registers (R0 to R7 and R15)**: Each of them refers to the same 32-bit physical register in all processor modes. They are completely general-purpose registers, with no special uses implied by the architecture
 - **Banked Registers (R8 to R14)**: Different physical registers depending on the processor mode. Where a particular physical register is intended, a more specific name is used.<br>
 Almost all instructions allow the banked registers to be used wherever a general-purpose register is allowed.
@@ -36,18 +36,18 @@ By default, R15 operates as a program counter, used for reading or writing the a
 This is due to the pipeline architecture of ARM processors, where instructions are pre-fetched.<br>
 
 
-## A2.5 Program Status Registers
+## Program Status Registers
 The Current Program Status Register (CPSR) is accessible in all processor modes. It contains condition code flags, interrupt disable bits, the current processor mode, and other status and control information.<br>
 Each exception mode also has a Saved Program Status Register (SPSR), that is used to preserve the value of the CPSR when the associated exception occurs.<br>
 
-### A2.5.1 Types of PSR bits
+### Types of PSR bits
 ![image](https://github.com/vacu9708/Embedded-system/assets/67142421/62c15732-41b0-4431-8a3c-22fc6feb9cb8)<br>
 - **Reserved bits**: Reserved for future expansion. Implementations must read these bits as 0 and ignore writes to them.
 - **User-writable bits(N, Z, C, V, Q, GE[3:0], E)**: Can be written from any mode.
 - **Privileged bits(A, I, F, and M[4:0])**: Can be written from any privileged mode. Writes to privileged bits in User mode are ignored.
 - **Execution state bits(J, T)**: Can be written from any privileged mode. Writes to execution state bits in User mode are ignored. They are always zero in ARM state.
 
-### A2.5.2 The condition code flags
+### The condition code flags
 The N, Z, C, and V (Negative, Zero, Carry and oVerflow) bits are collectively known as the condition code flags, often referred to as flags.<br>
 The condition code flags in the CPSR can be tested by most instructions to determine whether the instruction is to be executed.(if else)<br>
 #### The condition flags are usually modified by:
@@ -62,34 +62,34 @@ memory.
 - Execution of flag-setting variants of arithmetic and logical instructions whose destination register is
 R15. These also copy the SPSR to the CPSR, and are intended for returning from exceptions.
 
-### A2.5.3 The Q flag
+### The Q flag
 it[27] of the CPSR is known as the Q flag and is used to indicate whether overflow and/or saturation has occurred in some DSP-oriented instructions.<br>
 
-### A2.5.4 The GE[3:0] bits
+### The GE[3:0] bits
 The SIMD instructions use bits[19:16] as Greater than or Equal (GE) flags for individual bytes or halfwords of the result.<br>
 You can use these flags to control a later SEL instruction<br>
 
-### A2.5.5 The E bit
+### The E bit
 Controls load and store endianness for data handling.<br>
 
-### A2.5.6 The interrupt disable bits
+### The interrupt disable bits
 - **A bit**: Disables imprecise data aborts when it is set. This is available only in ARMv6 and above. In earlier versions, bit[8] of CPSR and SPSRs must be treated as a reserved bit, as described in Types of PSR bits on page A2-11.
 I bit Disables IRQ interrupts when it is set.
 F bit Disables FIQ interrupts when it is set.
 
-### A2.5.7 The mode bits
+### The mode bits
 M[4:0] are the mode bits. These determine the mode in which the processor operates.<br>
 ![image](https://github.com/vacu9708/Embedded-system/assets/67142421/c8ce20f3-44b9-4d2f-8eb8-646f2ba047a4)<br>
 
-### A2.5.8 The T and J bits
+### The T and J bits
 ![image](https://github.com/vacu9708/Embedded-system/assets/67142421/c46e77e9-2693-4351-b576-62c73d8edc3a)<br>
 The T and J bits select the current instruction set, as shown in Table A2-3.
 
-### A2.5.9 Other bits
+### Other bits
 Other bits in the program status registers are reserved for future expansion.<br>
 In general, programmers must take care to write code in such a way that these bits are never modified. Failure to do this might result in code that has unexpected side effects on future versions of the architecture.
 
-## A2.6 Exceptions
+## Exceptions
 Exceptions are generated by internal and external sources to cause the processor to handle an event, such as an externally generated interrupt or an attempt to execute an Undefined instruction.<br>
 The processor state just before handling the exception is normally preserved so that the original program can be resumed when the exception routine has completed.<br>
 More than one exception can arise at the same time.<br>
@@ -102,20 +102,51 @@ To return after handling the exception, the SPSR is moved into the CPSR, and R14
 ### Types of exceptions
 The ARM architecture supports seven types of exception. Table A2-4 lists the types of exception and the processor mode that is used to process each type.<br>
 ![image](https://github.com/vacu9708/Embedded-system/assets/67142421/8f983210-851f-4d21-abf1-833acaa9c486)<br>
-#### A2.6.2 Reset
+#### Reset
 When the Reset input is asserted on the processor, the ARM processor immediately stops execution of the current instruction.
-#### A2.6.3 Undefined Instruction exception
+#### Undefined Instruction exception
 If the ARM processor executes a coprocessor instruction, it waits for any external coprocessor to acknowledge that it can execute the instruction. If no coprocessor responds, an Undefined Instruction exception occurs.
-#### A2.6.4 Software Interrupt exception
+#### Software Interrupt exception
 The Software Interrupt instruction (SWI) enters Supervisor mode to request a particular supervisor (operating system) function.
-#### A2.6.5 Prefetch Abort (instruction fetch memory abort)
+#### Prefetch Abort (instruction fetch memory abort)
 A memory abort is signaled by the memory system. Activating an abort in response to an instruction fetch marks the fetched instruction as invalid.<br>
 A Prefetch Abort exception is generated if the processor tries to execute the invalid instruction.<br>
 If the instruction is not executed (for example, as a result of a branch being taken while it is in the pipeline), no Prefetch Abort occurs.
-#### A2.6.6 Data Abort (data access memory abort)
+#### Data Abort (data access memory abort)
 A memory abort is signaled by the memory system. Activating an abort in response to a data access (load or store) marks the data as invalid. A Data Abort exception occurs before any following instructions or exceptions have altered the state of the CPU.<br>
 #### `Effects of data-aborted instructions`
 If a Data Abort occurs in a data access instruction, the value of each memory location that the instruction stores to is:
 - unchanged if the memory system does not permit write access to the memory location
 - UNPREDICTABLE otherwise.
-### A2.6.8 Interrupt request (IRQ) exception
+#### Interrupt request (IRQ) exception
+The IRQ exception is generated externally by asserting the IRQ input on the processor. It has a lower priority than FIQ
+#### Fast interrupt request (FIQ) exception
+The FIQ exception is generated externally by asserting the FIQ input on the processor. FIQ is designed to support a data transfer or channel process, and has sufficient private registers to remove the need for register saving in such applications, therefore minimizing the overhead of context switching.
+### Exception priorities
+![image](https://github.com/vacu9708/Embedded-system/assets/67142421/8a47a1ec-e28e-4cf5-b4a9-087883a2e507)
+
+## Endian
+Endianness is the order of bytes of digital data.<br>
+ARMv6 supports both big-endian and little-endian operation<br>
+(Least Significant bit: the bit that has the lowest value)
+- In little-endian mode, the least significant bit is stored at the smallest address.
+- In big-endian mode, the most significant bit is stored at the smallest address.
+
+## Unaligned access support
+#### Prior to ARMv6
+Traditionally, ARM expects memory accesses to be aligned
+- Halfword accesses should be halfword-aligned.
+- Word accesses should be word-aligned.
+
+#### Changes with ARMv6:
+ARMv6 introduced support for unaligned word and halfword data access.
+
+## Synchronization primitives
+#### LDREX (Load-Exclusive)
+- When a thread executes an LDREX instruction, it reads data from a memory location and the processor marks this location as having been accessed exclusively by this thread.
+- However, this 'exclusive' mark doesn't block other threads or cores from accessing the same memory location. They can still read from and write to this location.
+#### STREX (Store-Exclusive)
+- STREX checks if the memory location still has its exclusive access status. If no other thread has written to this location since the LDREX was executed, STREX considers the operation successful and writes the new value.
+- If, however, another thread has written to the location, the STREX operation will fail, returning a non-zero value.
+#### Typical Usage in a Loop:
+In practice, the thread often repeatedly reads (LDREX) and tries to write (STREX) in a loop until STREX reports success (indicating no other writes occurred in the meantime).
