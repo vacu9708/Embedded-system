@@ -18,7 +18,7 @@ corrupting User mode state when the exception occurs.
 
 ## Registers
 ![image](https://github.com/vacu9708/Embedded-system/assets/67142421/c4274b11-1a5f-4e1d-bbe9-49a0cfdbf5b2)<br>
-- Total of 37 registers
+- Total of 37 registers(Sum of the registers in the picture above is 37)
   - 31 general-purpose 32-bit registers, including a program counter. R0 ~ R15 visible at any time. (The PC is no longer treated as a general-purpose register in ARMv8 or later)
   - 6 status registers
 ### General-purpose registers
