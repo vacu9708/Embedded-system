@@ -182,3 +182,40 @@ VMSAv6 requires four registers:
 - Data Aborts not from external translation update FAR with the aborting address. If from external translation, FAR does not contain the aborting address.
 - Translation aborts during data cache maintenance operations update DFSR with the reason and FAR with the faulting address.
 - Precise Aborts during instruction cache maintenance are indicated in DFSR, with the modified virtual address reflected in IFSR.
+
+## VMSAv6 Page Table Translation Enhancements
+
+### Translation Table Base Registers (TTBRs)
+- **VMSAv6** introduces additional TTBRs and a Translation Table Base Control Register (TTBCR) for enhanced control.
+- **TTBR0** and **TTBR1** manage different sets of addresses, with **TTBR1** now responsible for OS and I/O addresses.
+- **TTBCR** determines which TTBR is used on a TLB miss.
+- **TTBR0** supports table ranges from 128 bytes to 16KB, while **TTBR1** is fixed at 16KB.
+
+### Control Bit
+- A control bit has been integrated into the lowest bits of the TTBRs for further configuration options.
+
+### First-level Fetch
+- The Translation Table Base register combines with specific bits of the modified virtual address to access memory for first-level descriptors.
+
+### Memory Sections
+- **Supersections**: Optional 16MB blocks.
+- **Sections**: Standard 1MB blocks.
+- **Small pages**: 4KB blocks.
+- **Large pages**: 64KB blocks.
+- **Tiny pages**: Not included in VMSAv6 and now obsolete.
+
+### Translation Tables
+- **First-level table**: Holds section and supersection translations, plus pointers to second-level tables.
+- **Second-level tables**: Handle translations for large and small pages.
+
+### TLB and MMU
+- The MMU converts virtual addresses to physical addresses and verifies access permissions.
+- Section-mapped access requires a first-level fetch, whereas page-mapped access needs a second-level fetch.
+
+### Endianness
+- The EE-bit in the System Control coprocessor decides the endianness of the page table lookups.
+
+### Notes
+- The introduction of VMSAv6 has led to the deprecation of certain features and page formats, including tiny pages.
+- The Translation Base is consistently at a specified address when TTBR1 is selected, with variations depending on TTBCR values.
+- Prior to VMSAv6, only TTBR0 existed, with its functionality now extended to support the new system features.
