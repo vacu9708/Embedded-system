@@ -7,13 +7,8 @@
 VMSA has been improved in ARMv6 to avoid the need for TLB invalidation on a context switch, thus improving performance.<br>
 The key enhancements include:
 - Global mappings for applications, avoiding the need for TLB flushes on most context switches.
-- New memory types and attributes for efficient memory management.
+- New memory types for efficient memory management.
 - Enhanced memory properties in TLB entries for better access control.
-### Key Changes Introduced in VMSA6
-- **Fast Context Switch Extension (FCSE)**: The FCSE in ARMv6 is used for backward compatibility, allowing for quick switches of virtual addresses. Its use is deprecated in newer systems.
-- **System Control Coprocessor Registers**: These registers allow for precise control over the system and provide status information about memory aborts to the ARM processor.
-- **TLB Entry Management**: Specific TLB entries can be locked down or associated with an application space identifier to optimize access times and ensure deterministic behavior.
-- **Memory Region Attributes**: Memory regions can be marked to indicate shared usage by multiple processors, introducing the concept of Tiny pages and deprecating older page table formats.
 
 ## Memory Access Sequence
 When the ARM CPU generates a memory access, the MMU performs a lookup for a modified virtual address in a TLB. This includes checking the current ASID in ARMv6 implementations.<br>
