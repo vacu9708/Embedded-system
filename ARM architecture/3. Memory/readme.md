@@ -1,7 +1,7 @@
 # Memory
 ## About the VMSA
 - **Virtual Memory System**: VMSA involves dynamically allocating memory and mapping it to physical addresses via a Memory Management Unit (MMU).
-- **Translation Table Walk**: This is the process of converting virtual addresses to physical ones, known as a _translation table walk_. It is a necessary but costly process in terms of execution time.
+- **Translation Table Walk**: This is the process of converting virtual addresses to physical ones.
 - **Translation Lookaside Buffers (TLBs)**: TLBs are specialized caches that help reduce the average cost of memory access by storing the results of recent translation table lookups.
 #### Enhancements in ARMv6 (VMSA6)
 VMSA has been improved in ARMv6 to avoid the need for TLB invalidation on a context switch, thus improving performance.<br>
