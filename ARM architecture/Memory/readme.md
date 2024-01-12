@@ -21,7 +21,7 @@ When the ARM CPU generates a memory access, the MMU performs a lookup for a modi
 - **ASID (Address Space Identifier)**: Uniquely identifies a process's virtual memory space.
 - Harvard or unified TLBs are used depending on the implementation.
 - Instruction fetches use the instruction TLB and data accesses use the data TLB.
-- If no appropriate TLB entry is found, a translation table walk is performed by hardware.
+- If no appropriate TLB entry is found, a translation table read is performed by hardware.
 #### _Note_
 - Modified virtual address translations are globally mapped from ARMv6, considering the 32-bit modified virtual address plus ASID values when non-global address is accessed.
 - The FCSE mechanism is deprecated in ARMv6. Concurrent use of FCSE and ASID leads to unpredictable behavior.
@@ -38,9 +38,6 @@ Each TLB entry contains a modified virtual address, a page size, a physical addr
 - Small pages: 4KB
 #### _Note_
 - Tiny (1KB) pages are not supported in VMSA6.<br>
-
-Supersections, sections, and large pages facilitate mapping of large memory regions with a single TLB entry.<br>
-If no mapping is found in the TLB, the hardware performs a translation table read by hardware.<br>
 
 ## Enabling and disabling the MMU
 ### Controlling the MMU:
@@ -116,6 +113,7 @@ Access to a memory region is controlled by the access permission and domain bits
 ### Page Table Formats
 - The TEX, C, and B bits are encoded in the page table entries.
 - Table B4-3 in the ARM Architecture Reference Manual shows the mapping of these bits to different memory region types.
+
 ![image](https://github.com/vacu9708/Embedded-system/assets/67142421/474e8c07-7425-4d54-99cb-144aa4cd6327)
 
 ## Aborts
