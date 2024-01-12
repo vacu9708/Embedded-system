@@ -16,6 +16,8 @@ Five of them are known as exception modes: FIQ, IRQ, Supervisor, Abort, Undefine
 corrupting User mode state when the exception occurs.
 - **System mode**: System mode is one of the privileged modes, and it shares the same register set as the User mode. It has full access to the system's privileged resources.
 
+Switching between these modes is generally controlled by the ARM processor itself in response to certain events (like interrupts). However, software can also change modes explicitly, usually done by system-level code. This is achieved by modifying specific bits in the CPSR.
+
 ## Registers
 ![image](https://github.com/vacu9708/Embedded-system/assets/67142421/c4274b11-1a5f-4e1d-bbe9-49a0cfdbf5b2)<br>
 - Total of 37 registers(Sum of the registers in the picture above is 37)
@@ -31,9 +33,8 @@ corrupting User mode state when the exception occurs.
 ### Special Uses of these registers
 - R13 (Stack Pointer): Used for stack operations.
 - R14 (Link Register): Holds return address after a subroutine call. This is more efficient than using a call stack for every function call, which INTEL uses.
-- R15 (Program Counter): R15 can be used in place of other general-purpose registers for certain special-case effects.<br>
-By default, R15 operates as a program counter, used for reading or writing the address of the next's next instruction.<br>
-This is due to the pipeline architecture of ARM processors, where instructions are pre-fetched.<br>
+- R15 (Program Counter)(deprecated): R15 can be used in place of other general-purpose registers for certain special-case effects.<br>
+By default, R15 operates as a program counter, used for storing the address of the next's next instruction. Storing the next's next instruction is due to the pipeline, where instructions are pre-fetched.<br>
 
 ## Program Status Registers
 - **Current Program Status Register(CPSR)**: Holds processor status, condition code flags, interrupt disable bits, processor mode, etc.
@@ -42,24 +43,15 @@ This is due to the pipeline architecture of ARM processors, where instructions a
 ![image](https://github.com/vacu9708/Embedded-system/assets/67142421/a8d11d29-e894-4dab-aa30-fa40bdaacdd0)
 ### Types of PSR bits
 ![image](https://github.com/vacu9708/Embedded-system/assets/67142421/62c15732-41b0-4431-8a3c-22fc6feb9cb8)<br>
+`Permissions`<br>
 - **Reserved bits**: Reserved for future expansion. Implementations must read these bits as 0 and ignore writes to them.
 - **User-writable bits(N, Z, C, V, Q, GE[3:0], E)**: Can be written from any mode.
 - **Privileged bits(A, I, F, and M[4:0])**: Can be written from any privileged mode. Writes to privileged bits in User mode are ignored.
-- **Execution state bits(J, T)**: Can be written from any privileged mode. Writes to execution state bits in User mode are ignored. They are always zero in ARM state.
+- **Execution state bits(J, T)**: Can be written from any privileged mode. Writes to execution state bits in User mode are ignored.
 ### The condition code flags
-The N, Z, C, and V (Negative, Zero, Carry and oVerflow) bits are collectively known as the condition code flags, often referred to as flags.<br>
-The condition code flags in the CPSR can be tested by most instructions to determine whether the instruction is to be executed.(if else)<br>
-#### The condition flags are usually modified by:
-- Execution of a comparison instruction (CMN, CMP, TEQ or TST).
-- Execution of some other arithmetic, logical or move instruction.
-#### The flags can be modified in these additional ways:
-- Execution of an MSR instruction.
-- Execution of MRC instructions with destination register R15.
-- Execution of some variants of the LDM instruction.
-- Execution of an RFE instruction in a privileged mode that loads a new value into the CPSR from
-memory.
-- Execution of flag-setting variants of arithmetic and logical instructions whose destination register is
-R15. These also copy the SPSR to the CPSR, and are intended for returning from exceptions.
+The N, Z, C, and V (Negative, Zero, Carry and oVerflow) bits are collectively known as the condition code flags, often referred to as flags.
+- The condition code flags in the CPSR can be tested by most instructions to determine whether the instruction is to be executed.(if else)
+- They are usually modified by the execution of some arithmetic, logical, move instruction, or comparison instruction (CMN, CMP, TEQ or TST).
 ### The Q flag
 bit[27] of the CPSR is known as the Q flag and is used to indicate whether overflow and/or saturation has occurred in some DSP-oriented instructions.<br>
 ### The GE[3:0] bits
@@ -75,38 +67,37 @@ F bit Disables FIQ interrupts when it is set.
 M[4:0] are the mode bits. These determine the mode in which the processor operates.<br>
 ![image](https://github.com/vacu9708/Embedded-system/assets/67142421/c8ce20f3-44b9-4d2f-8eb8-646f2ba047a4)<br>
 ### The T and J bits
-![image](https://github.com/vacu9708/Embedded-system/assets/67142421/c46e77e9-2693-4351-b576-62c73d8edc3a)<br>
-The T and J bits select the current instruction set, as shown in Table A2-3.
+The T and J bits select the current instruction set, as shown in Table A2-3.<br>
+![image](https://github.com/vacu9708/Embedded-system/assets/67142421/c46e77e9-2693-4351-b576-62c73d8edc3a)
 ### Other bits
 Other bits in the program status registers are reserved for future expansion.<br>
 In general, programmers must take care to write code in such a way that these bits are never modified. Failure to do this might result in code that has unexpected side effects on future versions of the architecture.
 
 ## Exceptions
 Exceptions are generated by internal and external sources to cause the processor to handle an event, such as an externally generated interrupt.<br>
-The processor state just before handling the exception is normally preserved so that the original program can be resumed when the exception routine has completed.<br>
 More than one exception can arise at the same time.<br>
-All exception modes have replacement banked registers. When an exception occurs, standard registers are replaced with registers specific to the exception mode.<br>
+All exception modes have replacement banked registers. When an exception occurs, standard registers are replaced with registers specific to the exception mode.
+### Exception process
+- When an exception occurs, execution is forced from a fixed memory address corresponding to the type of exception. These fixed addresses are called the **exception vectors**. There is a separate vector location for each exception.
+- The banked versions of R14 and the SPSR are used to save state so that the original program can be resumed when the exception routine has completed.
+- To return after handling the exception, the SPSR is moved into the CPSR, and R14 is moved to the PC.
 ### Types of exceptions
 The ARM architecture supports seven types of exception. Table A2-4 lists the types of exception and the processor mode that is used to process each type.<br>
 ![image](https://github.com/vacu9708/Embedded-system/assets/67142421/8f983210-851f-4d21-abf1-833acaa9c486)<br>
 #### Reset
 When the Reset input is asserted on the processor, the ARM processor immediately stops execution of the current instruction.
 #### Undefined Instruction exception
-If the ARM processor executes a coprocessor instruction, it waits for any external coprocessor to acknowledge that it can execute the instruction. If no coprocessor responds, an Undefined Instruction exception occurs.
+Occurs when the processor encounters an instruction that is either **not defined** in the ARM instruction set or is **not valid** for the current state of the processor
 #### Software Interrupt exception
-The Software Interrupt instruction (SWI) enters Supervisor mode to request a particular supervisor (operating system) function.
-#### Prefetch Abort (instruction fetch memory abort)
-A memory abort is signaled by the memory system. Activating an abort in response to an instruction fetch marks the fetched instruction as invalid.<br>
-A Prefetch Abort exception is generated if the processor tries to execute the invalid instruction.<br>
-If the instruction is not executed (for example, as a result of a branch being taken while it is in the pipeline), no Prefetch Abort occurs.
-#### Data Abort (data access memory abort)
-A memory abort is signaled by the memory system. Activating an abort in response to a data access (load or store) marks the data as invalid. A Data Abort exception occurs before any following instructions or exceptions have altered the state of the CPU.<br>
-- `Effects of data-aborted instructions`
-If a Data Abort occurs in a data access instruction, the value of each memory location that the instruction stores to is:
-  - unchanged if the memory system does not permit write access to the memory location
-  - UNPREDICTABLE otherwise.
+The Software Interrupt instruction (SWI) enters Supervisor mode to request a particular supervisor function.(OS system call)
+#### Prefetch Abort (Instruction fetch memory abort)
+- **Precondition to occur**: A memory abort is signaled by the memory system. Attempting to fetch an instruction from a memory location that it cannot access correctly marks the data as invalid.
+- **Occurs when**: A Prefetch Abort exception is generated if the processor tries to execute the invalid instruction.
+- **Does not occur when**: If the instruction is not executed (for example, as a result of a branch being taken while it is in the pipeline), no Prefetch Abort occurs.
+#### Data Abort (Data access memory abort)
+A data abort occurs when a problem arises during a data access operation, such as reading from or writing to memory.
 #### Interrupt request (IRQ) exception
-The IRQ exception is generated externally by asserting the IRQ input on the processor. It has a lower priority than FIQ
+The IRQ exception is generated externally by asserting the IRQ input on the processor.
 #### Fast interrupt request (FIQ) exception
 The FIQ exception is generated externally by asserting the FIQ input on the processor.<br>
 FIQ is designed to support a data transfer or channel process.<br>
@@ -119,10 +110,6 @@ FIQ is designed to support a data transfer or channel process.<br>
 ### Exception level
 (not supported before ARMv7)<br>
 ![image](https://github.com/vacu9708/Embedded-system/assets/67142421/7f28fbca-f3d2-4a1e-a5e2-50d572e5f3df)
-### Exception process
-When an exception occurs, execution is forced from a fixed memory address corresponding to the type of exception. These fixed addresses are called the **exception vectors**. There is a separate vector location for each exception, including reset.<br>
-And the banked versions of R14 and the SPSR are used to save state so that the original program can be resumed when the exception routine has completed.<br>
-To return after handling the exception, the SPSR is moved into the CPSR, and R14 is moved to the PC.<br>
 
 ## Endian
 Endianness is the order of bytes of digital data.<br>
@@ -131,12 +118,13 @@ ARMv6 supports both big-endian and little-endian operation<br>
 - In little-endian mode, the least significant bit is stored at the smallest address. (most common)
 - In big-endian mode, the most significant bit is stored at the smallest address.
 
+![image](https://github.com/vacu9708/Embedded-system/assets/67142421/a8bf33ea-c471-40fc-b048-ab2c0b6592bf)
+
 ## Unaligned access support
-#### Prior to ARMv6
-Traditionally, ARM expects memory accesses to be aligned
-- Halfword accesses should be halfword-aligned.
-- Word accesses should be word-aligned.
+- **Aligned Access**: An access is aligned if the memory address being accessed is a multiple of the size of the data type. For example, accessing a 4-byte integer at memory addresses 0, 4, 8, etc., is considered aligned.
+- **Unaligned Access**: An access is unaligned if the memory address is not a multiple of the size of the data type. For instance, accessing a 4-byte integer at memory addresses 2, 6, 10, etc., would be unaligned.
 #### Changes with ARMv6:
+Traditionally, ARM expects memory accesses to be aligned.<br>
 ARMv6 introduced support for unaligned word and halfword data access.
 
 ## Synchronization primitives
