@@ -121,7 +121,8 @@ ARMv6 supports both big-endian and little-endian operation<br>
 ![image](https://github.com/vacu9708/Embedded-system/assets/67142421/a8bf33ea-c471-40fc-b048-ab2c0b6592bf)
 
 ## Unaligned access support
-- **Aligned Access**: An access is aligned if the memory address being accessed is a multiple of the size of the data type. For example, accessing a 4-byte integer at memory addresses 0, 4, 8, etc., is considered aligned.
+- **Aligned Access**: An access is aligned if the memory address being accessed is a multiple of the size of the data type. For example, accessing a 4-byte integer at memory addresses 0, 4, 8, etc., is considered aligned.<br>
+Aligned memory accesses are typically faster because they align with the natural boundaries of memory buses and caches.
 - **Unaligned Access**: An access is unaligned if the memory address is not a multiple of the size of the data type. For instance, accessing a 4-byte integer at memory addresses 2, 6, 10, etc., would be unaligned.
 #### Changes with ARMv6:
 Traditionally, ARM expects memory accesses to be aligned.<br>
@@ -143,5 +144,5 @@ In practice, the thread often repeatedly reads (LDREX) and tries to write (STREX
 - **Decline of Jazelle**: The advancements in JIT have largely overshadowed the need for direct bytecode execution.
 
 ## Saturated integer arithmetic
-Saturated arithmetic prevents the overflow/underflow of typical integer arithmetic. Instead, if an operation results in a value outside the representable range, it is set to the closest representable value (the maximum or minimum value of the data type).
+Saturated arithmetic prevents the overflow/underflow. Instead, if an operation results in a value outside the representable range, it is set to the closest representable value (the maximum or minimum value of the data type).
 - **For instance**, in 8-bit saturated arithmetic, if adding two numbers results in a value greater than 255, the result is set to 255. Similarly, if subtraction would result in a negative value, the result is set to 0.
