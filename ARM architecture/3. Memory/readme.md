@@ -226,3 +226,45 @@ The first-level translation table contains entries that can be one of several ty
 - **System identification**: These registers can hold information about the processor, such as the manufacturer ID, CPU ID, and version numbers.
 - **Performance monitoring**: Certain CP15 registers are used to monitor the performance of the CPU, including counting cache misses, instruction execution, and other performance metrics.
 - **Configuration**: CP15 registers allow the configuration of other system settings, like the endianess of data processing, interrupt handling, and so forth.
+
+## Protected Memory System Architecture (PMSA)
+### **Overview of PMSA**
+- **Purpose**: To provide hardware-based security features.
+- **Functionality**: Controls access to memory regions.
+- **Target Devices**: Primarily used in microcontrollers and low-power devices.
+
+### **Key Components**
+- **Memory Protection Unit (MPU)**: Central to PMSA, the MPU controls access rights.
+- **Registers**: Used to configure and control the MPU settings.
+- **Privilege Levels**: Different levels (like user and supervisor) to control access based on the running context.
+
+### **Memory Segmentation and Protection**
+- **Segmentation**: Memory is divided into segments or regions.
+- **Protection Attributes**: Each segment is assigned specific attributes (read/write/execute permissions).
+- **Fault Handling**: If a task accesses a memory region without proper permissions, a fault is generated.
+
+### **Operational Modes**
+- **Privileged Mode**: Full access to all resources, usually for the operating system.
+- **Unprivileged Mode**: Restricted access, typically for application code.
+
+### **Implementation and Configuration**
+- **Setting up MPU**: Define memory regions and their attributes.
+- **Context Switching**: Ensure proper configuration during task switches in an OS environment.
+
+### **Security Implications**
+- **Prevention of Unauthorized Access**: Ensures tasks cannot access memory regions they are not permitted to.
+- **Isolation of Faults**: Limits the impact of faults to specific regions.
+
+### **Use Cases and Applications**
+- **Embedded Systems**: Ideal for systems where security and reliability are critical.
+- **IoT Devices**: Provides a level of security in connected devices.
+
+### **Advantages and Limitations**
+- **Advantages**: Enhanced security, fine-grained control over memory, and fault isolation.
+- **Limitations**: Complexity in configuration, overhead in terms of memory and processing.
+
+### **Future Developments**
+- **Integration with Other Security Features**: Combining PMSA with TrustZone and other ARM security features.
+
+### **Conclusion**
+PMSA is a vital component in ARM architecture for ensuring memory security, especially in systems where reliability and data protection are paramount.
