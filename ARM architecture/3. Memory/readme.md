@@ -167,24 +167,18 @@ VMSAv6 requires four registers:
 - *Small pages* (4KB)
 - *Tiny pages* (1KB, not in VMSAv6)
 ### Translation Tables: Two-level structure in main memory for translating virtual addresses to physical addresses.
-- **First-level table**: Contains section and supersection translations, with pointers to second-level tables.
-- **Second-level tables**: Handle translations for both large and small pages, providing a finer resolution than source.
-### Translation Table Base
-- **TLB Miss Translation**: When a TLB miss occurs, the Translation Table Base Register (in CP15 register 2) holds the base address of the first-level table.
-- **Endian Configuration**: The EE-bit in the System Control coprocessor determines endianness during table lookups.
-- **Obsolete Features**: Tiny pages and their associated table format are now obsolete.
+- **First-level table**: Contains section and supersection translations, and pointers to second-level tables.
+- **Second-level tables**: Handle translations for pages.
 ### First-level Fetch
 - **Address Translation**: Bits[31:14] of the Translation Table Base Register are used with modified virtual addresses to fetch descriptors or pointers to second-level tables.
-#### Register Details
-Prior to VMSAv6, only one TTBR(Tanslation Table Base Register) existed. With VMSAv6, additional TTBRs and a control register (TTBCR) were introduced.
-- **TTBR0**: Expected for operating system and I/O addresses.
-- **TTBR1**: Used for process-specific addresses.
-- **TTBCR**: Determines which TTBR to use on a TLB miss.
+### Etc
+- **On TLB Miss**: When a TLB miss occurs, the Translation Table Base Register (in CP15 register 2) holds the base address of the first-level table.
+- **Endian Configuration**: The EE-bit in the System Control coprocessor determines endianness during table lookups.
 
 ## Page Table Translation in VMSAv6
 VMSAv6 supports two page table formats:
-- **Backward-Compatible Format**: This format supports sub-page access permissions and has been extended to support extended region types.
-- **New Format**: This format does not support sub-page access permissions but includes support for the following features:
+1. **Backward-Compatible Format**: This format supports sub-page access permissions and has been extended to support extended region types.
+2. **New Format**: This format does not support sub-page access permissions but includes support for the following features:
   - Extended region types
   - Global and process-specific pages
   - More access permissions
@@ -195,8 +189,8 @@ VMSAv6 supports two page table formats:
 - The first-level descriptor can either directly point to a large section of physical memory (like a 1MB section), or it can point to a second-level translation table that handles smaller blocks of memory.
 
 The first-level translation table contains entries that can be one of several types:
-- **Section Descriptor**: This type of entry maps a full 1MB section of virtual address space directly to physical memory. It does not point to a second-level table but instead provides the physical base address of the section along with access permissions and other attributes.
 - **Supersection Descriptor**: Similar to a section descriptor, a supersection descriptor maps a larger block of memory (typically 16MB) and also does not point to a second-level table.
+- **Section Descriptor**: This type of entry maps a full 1MB section of virtual address space directly to physical memory. It does not point to a second-level table but instead provides the physical base address of the section along with access permissions and other attributes.
 - **Coarse Page Table Descriptor**: This entry does point to a second-level table, specifically a **coarse second-level page table**. Each entry in the coarse page table then maps a smaller portion of memory (typically 4KB pages).
 - **Fine Page Table Descriptor(OBSOLETE)**: This is similar to the coarse page table descriptor but allows for an even finer granularity of mapping (typically **1KB** pages) and thus points to a **fine seond-level page table** with more entries than the coarse table.
 ### Second-Level Descriptor(Entries in the second-level translation table)
