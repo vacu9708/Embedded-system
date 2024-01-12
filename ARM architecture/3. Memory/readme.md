@@ -20,7 +20,6 @@ When the ARM CPU generates a memory access, the MMU performs a lookup for a modi
 - Modified virtual address translations are globally mapped from ARMv6, considering the 32-bit modified virtual address plus ASID values when non-global address is accessed.
 - The FCSE mechanism is deprecated in ARMv6. Concurrent use of FCSE and ASID leads to unpredictable behavior.
 
-TLB entries are used to control access permissions, memory region attributes, and the physical address used for external memory accesses or tightly coupled memory.<br>
 ### TLB Match Process
 Each TLB entry contains a modified virtual address, a page size, a physical address, and memory properties. It's associated with an application space identifier (ASID) or marked as global.<br>
 - A match occurs if the higher order bits of the modified virtual address match and the ASID is the same.
@@ -84,21 +83,19 @@ Access to a memory region is controlled by the access permission and domain bits
   - b'01: Client - Accesses are allowed, but they must follow the access permissions set in the TLB entries for that domain.
   - b'11: Manager - Accesses are allowed without checking the TLB entries. This gives manager programs full control over the domain, but also bypasses security checks.
 #### Clients and Managers:
-- Programs can be clients of some domains and managers of others. This allows for flexible memory protection. For example, a program might be a client of the domain containing its own code and data, but a manager of a domain containing shared resources.
-- Client programs are subject to the access permissions set in the TLB entries for the domain they are accessing. This helps to prevent unauthorized access to memory.
-- Manager programs have full control over the domains they manage, including the ability to change the access permissions in the TLB entries. This gives them more power, but also makes them more vulnerable to attack.
+- **Client and Manager**: Programs can be clients of some domains and managers of others. This allows for flexible memory protection. For example, a program might be a client of the domain containing its own code and data, but a manager of a domain containing shared resources.
+- **Client permission**: Client programs are subject to the access permissions set in the TLB entries for the domain they are accessing. This helps to prevent unauthorized access to memory.
+- **Manager permission**: Manager programs have full control over the domains they manage, including the ability to change the access permissions in the TLB entries. This gives them more power, but also makes them more vulnerable to attack.
 #### Benefits of Domains:
 - Domains provide a way to isolate programs from each other, which can help to improve security and stability.
-- They can also be used to improve performance by allowing different programs to use different memory regions.
 
 ## Memory region attributes
-### Prior to VMSAv6
+### Prior to VMSAv6(Problem)
 - Only two bits were used for memory region attributes: C (cacheable) and B (bufferable).
-- The exact usage of these bits, and how they affected caching behavior, was implementation defined.
-- This means that different ARM processors could behave differently, even if they used the same memory region attributes.
+- **Incompatible**: The exact usage of these bits was implementation defined, which meant different ARM processors could behave differently, even if they used the same memory region attributes.
 ### VMSAv6 and Later
 - VMSAv6 introduced a more formal memory model, with additional bit fields and definitions for memory region attributes.
-- These attributes provide more control over caching behavior, and make it more consistent across different ARM processors.
+- These attributes provide more consistent behaviors across different ARM processors.
 ### Key Memory Region Attributes
 - TEX (Type Extension): This field provides additional information about the memory region type, such as whether it is normal memory, device memory, or strongly ordered memory.
 - C (Cacheable): This bit controls whether the memory region can be cached.
@@ -111,33 +108,28 @@ Access to a memory region is controlled by the access permission and domain bits
 ![image](https://github.com/vacu9708/Embedded-system/assets/67142421/474e8c07-7425-4d54-99cb-144aa4cd6327)
 
 ## Aborts
-Aborts are exceptions caused by memory access issues in ARM processors and can be categorized as follows:
+Aborts are exceptions caused by memory access issues.
 - **MMU fault**: Triggered by the MMU when it detects a memory access violation.
 - **Debug abort**: Occurs when the processor's debug mode is active, and a breakpoint or watchpoint is hit.
 - **External abort**: Caused by illegal or faulting memory accesses from the external memory system.
 
-Faults are recorded using the Fault Address and Fault Status registers.
-
+Faults(aborts) are recorded using the **Fault Address** and **Fault Status registers**.
 ### MMU Faults
 The MMU can generate four types of faults:
-1. **Alignment fault**: Occurs when memory access is not aligned correctly.
-2. **Translation fault**: Happens when there is an error translating a virtual memory address to a physical one.
-3. **Domain fault**: Triggered when access to a domain is not allowed or improperly configured.
-4. **Permission fault**: Arises when there is an attempt to access memory with improper permissions.
-### Fault-checking Sequence (Figure B4-2)
-The MMU follows a sequence to check for faults, which includes checking for alignment, translating addresses through descriptor tables, checking domain access, and finally, checking access permissions to determine if a fault should be reported.
-### Translation and Domain Faults
-These faults are related to the MMU's handling of virtual memory and access permissions:
+- **Alignment fault**: Occurs when memory access is not aligned correctly.
+- **Translation fault**: Happens when there is an error translating a virtual memory address to a physical one.
+- **Domain fault**: Triggered when access to a domain is not allowed or improperly configured.
+- **Permission fault**: Arises when there is an attempt to access memory with improper permissions.
+#### Fault-checking Sequence (Figure B4-2)
+The MMU follows a sequence to check for faults to determine if a fault should be reported.
+#### Translation and Domain Faults
 - **Section translation fault**: Occurs when the first-level descriptor is invalid.
-- **Page translation fault**: Occurs when the second-level descriptor is invalid.
 - **Section domain fault**: Occurs when the domain of the first-level descriptor is checked and found to be incorrect.
+- **Page translation fault**: Occurs when the second-level descriptor is invalid.
 - **Page domain fault**: Similar to section domain faults but at the second descriptor level.
-
-Updating the TLB (Translation Lookaside Buffer) is necessary when these faults occur to ensure system stability.
 ### Debug Events
-These are related to the processor's debug mode and include:
 - **Precise aborts**: When the exact address of the failing instruction is known.
-- **Imprecise aborts**: When the exact address is not known due to subsequent instructions executing before the abort is processed. (pipeline)
+- **Imprecise aborts**: When the exact address is not known due to subsequent instructions executing(pipeline) before the abort is processed.
 ### External Aborts
 External aborts are errors from the external memory system and can be precise or imprecise, affecting the Fault Address register and Fault Status register updates.
 ### Parity Error Reporting
@@ -151,14 +143,12 @@ VMSAv6 requires four registers:
 - **Data Fault Status Register (DFSR):** Updated on Data Aborts.
 - **Fault Address Register (FAR):** Contains the faulting address for precise exceptions.
 - **Watchpoint Fault Address Register (WFAR):** Updated on a watchpoint access that triggers a Data Abort.
-
 ### Notes:
 - IFSR and DFSR are updated on Data Aborts due to instruction cache maintenance operations.
 - A fifth fault status bit (bit[10]) for IFSR and DFSR is implementation-specific. DFSR also includes a write flag (bit[11]).
 - Precise Data Aborts prompt immediate CPU action, updating DFSR with Fault Status and domain number. FAR records the address causing the abort.
 - Instruction fetches that cause aborts update IFSR but not FAR unless the instruction is executed.
 - For Precise Data Aborts, the Fault Address is determined from R14 at the time the Prefetch Abort exception is encountered.
-
 ### Notes for Fault Status Register Encodings Table (B4.6.1)
 - Prior to VMSAv6, FS[3:0] values were implementation-defined.
 - In VMSAv6, Domain information for Data Accesses is obtained via TLB lookup. For Prefetch Aborts, faulting address and domain are determined from the TLB.
