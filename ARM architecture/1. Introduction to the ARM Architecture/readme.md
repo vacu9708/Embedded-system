@@ -2,19 +2,18 @@
 ## A1.1 About the ARM architecture
 
 ### Key Characteristics
-- **Reduced Instruction Set Computer (RISC):** ARM is a RISC architecture, which includes:
-  - Large uniform register file.
-  - Load/store architecture. where data-processing operations only operate on register contents, not directly on memory contents
-  - Simple addressing modes.
-  - Uniform and fixed-length instruction fields, to simplify instruction decode.(to facilitate pipeline)
+ARM is a Reduced Instruction Set Computer (**RISC**) architecture, which includes:
+- Large uniform register file.(In ARM's RISC architecture, there is a large set of registers, which are small, fast storage locations within the CPU. These registers are uniform, meaning they can all be used interchangeably for a wide range of instructions. This uniformity simplifies the instruction set and improves the speed of computation.)
+- Load/store architecture.(Data-processing operations (like addition, subtraction, etc.) are performed only on data in the registers, not directly on data in memory.)
+- Simple addressing modes.(Addressing modes refer to the ways in which instructions specify the location of data. The smaller number of simple addressing modes makes it easier to design the hardware to decode and execute instructions, which can lead to faster processing speeds.)
+- Uniform and fixed-length instruction fields, to simplify instruction decode.(to facilitate pipeline)
 
 ### Enhancements
 - Control over the Arithmetic Logic Unit (ALU) and shifter.
 - Auto-increment and auto-decrement addressing modes.
 - Load and Store Multiple instructions.
 - Conditional execution of almost all instructions.
-These enhancements to a basic RISC architecture allow ARM processors to achieve a good balance of high
-performance, small code size, low power consumption, and small silicon area.
+These enhancements to a basic RISC architecture allow ARM processors to achieve a good balance of high performance, small code size, low power consumption, and small silicon area.
 
 ### Coprocessor
 Coprocessors can be attached to the ARM processor. A coprocessor extends the processing features of a core by extending the instruction set or by providing configuration registers.
