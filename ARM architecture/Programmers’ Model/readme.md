@@ -87,15 +87,6 @@ All exception modes have replacement banked registers. When an exception occurs,
 ### Types of exceptions
 The ARM architecture supports seven types of exception. Table A2-4 lists the types of exception and the processor mode that is used to process each type.<br>
 ![image](https://github.com/vacu9708/Embedded-system/assets/67142421/8f983210-851f-4d21-abf1-833acaa9c486)<br>
-### Exception priorities
-![image](https://github.com/vacu9708/Embedded-system/assets/67142421/8a47a1ec-e28e-4cf5-b4a9-087883a2e507)
-### Exception level
-(not supported before ARMv7)<br>
-![image](https://github.com/vacu9708/Embedded-system/assets/67142421/7f28fbca-f3d2-4a1e-a5e2-50d572e5f3df)
-### Exception process
-When an exception occurs, execution is forced from a fixed memory address corresponding to the type of exception. These fixed addresses are called the **exception vectors**. There is a separate vector location for each exception, including reset.<br>
-And the banked versions of R14 and the SPSR are used to save state so that the original program can be resumed when the exception routine has completed.<br>
-To return after handling the exception, the SPSR is moved into the CPSR, and R14 is moved to the PC.<br>
 #### Reset
 When the Reset input is asserted on the processor, the ARM processor immediately stops execution of the current instruction.
 #### Undefined Instruction exception
@@ -121,6 +112,15 @@ FIQ is designed to support a data transfer or channel process.<br>
   - **Dedicated Registers:**: FIQ has additional banked registers(private) to remove the need for register saving in such applications, therefore minimizing the overhead of context switching.
   - **Shorter vector**: There are fewer instructions to process before the ISR code is reached.
   - **Higher Priority**: FIQ has a higher priority than IRQ 
+### Exception priorities
+![image](https://github.com/vacu9708/Embedded-system/assets/67142421/8a47a1ec-e28e-4cf5-b4a9-087883a2e507)
+### Exception level
+(not supported before ARMv7)<br>
+![image](https://github.com/vacu9708/Embedded-system/assets/67142421/7f28fbca-f3d2-4a1e-a5e2-50d572e5f3df)
+### Exception process
+When an exception occurs, execution is forced from a fixed memory address corresponding to the type of exception. These fixed addresses are called the **exception vectors**. There is a separate vector location for each exception, including reset.<br>
+And the banked versions of R14 and the SPSR are used to save state so that the original program can be resumed when the exception routine has completed.<br>
+To return after handling the exception, the SPSR is moved into the CPSR, and R14 is moved to the PC.<br>
 
 ## Endian
 Endianness is the order of bytes of digital data.<br>
