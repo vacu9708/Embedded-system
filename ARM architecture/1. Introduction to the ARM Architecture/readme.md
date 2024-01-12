@@ -2,7 +2,7 @@
 ## A1.1 About the ARM architecture
 
 ### Key Characteristics
-- **Reduced Instruction Set Computer (RISC):** ARM is an RISC architecture, which includes:
+- **Reduced Instruction Set Computer (RISC):** ARM is a RISC architecture, which includes:
   - Large uniform register file.
   - Load/store architecture. where data-processing operations only operate on register contents, not directly on memory contents
   - Simple addressing modes.
