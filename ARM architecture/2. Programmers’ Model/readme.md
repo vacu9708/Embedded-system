@@ -17,6 +17,13 @@ corrupting User mode state when the exception occurs.
 - **System mode**: System mode is one of the privileged modes, and it shares the same register set as the User mode. It has full access to the system's privileged resources.
 
 Switching between these modes is generally controlled by the ARM processor itself in response to certain events (like interrupts). However, software can also change modes explicitly, usually done by system-level code. This is achieved by modifying specific bits in the CPSR.
+### Exception level
+![image](https://github.com/vacu9708/Embedded-system/assets/67142421/7f28fbca-f3d2-4a1e-a5e2-50d572e5f3df)<br>
+Exception Levels (ELs): ARMv8 replaces the above modes with a hierarchy of exception levels:
+- **EL0**: The least privileged level, typically for application code (similar to User mode in ARMv7).
+- **EL1**: For operating system kernel code, similar to the Supervisor mode.
+- **EL2**: A new level, typically used by hypervisors in virtualized environments.
+- **EL3**: The most privileged level, used for secure boot and trusted execution environments, like TrustZone.
 
 ## Registers
 ![image](https://github.com/vacu9708/Embedded-system/assets/67142421/c4274b11-1a5f-4e1d-bbe9-49a0cfdbf5b2)<br>
@@ -107,9 +114,6 @@ FIQ is designed to support a data transfer or channel process.<br>
   - **Higher Priority**: FIQ has a higher priority than IRQ 
 ### Exception priorities
 ![image](https://github.com/vacu9708/Embedded-system/assets/67142421/8a47a1ec-e28e-4cf5-b4a9-087883a2e507)
-### Exception level
-(not supported before ARMv7)<br>
-![image](https://github.com/vacu9708/Embedded-system/assets/67142421/7f28fbca-f3d2-4a1e-a5e2-50d572e5f3df)
 
 ## Endian
 Endianness is the order of bytes of digital data.<br>
