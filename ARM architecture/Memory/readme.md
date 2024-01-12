@@ -177,13 +177,13 @@ VMSAv6 requires four registers:
 
 ## Hardware page table translation
 **MMU Function**: Translates memory accesses based on sections or pages.
-### Memory Sections:
+#### Memory Sections:
 - *Supersections* (optional, 16MB)
 - *Sections* (1MB)
-- Supported page sizes:
-  - *Tiny pages* (1KB, not in VMSAv6)
-  - *Small pages* (4KB)
-  - *Large pages* (64KB)
+#### Supported page sizes:
+- *Large pages* (64KB)
+- *Small pages* (4KB)
+- *Tiny pages* (1KB, not in VMSAv6)
 ### Translation Tables: Two-level structure in main memory for translating virtual addresses to physical addresses.
 - **First-level table**: Contains section and supersection translations, with pointers to second-level tables.
 - **Second-level tables**: Handle translations for both large and small pages, providing a finer resolution than source.
@@ -194,7 +194,7 @@ VMSAv6 requires four registers:
 ### First-level Fetch
 - **Address Translation**: Bits[31:14] of the Translation Table Base Register are used with modified virtual addresses to fetch descriptors or pointers to second-level tables.
 #### Register Details
-Prior to VMSAv6, only one TTBR existed. With VMSAv6, additional TTBRs and a control register (TTBCR) were introduced.
+Prior to VMSAv6, only one TTBR(Tanslation Table Base Register) existed. With VMSAv6, additional TTBRs and a control register (TTBCR) were introduced.
 - **TTBR0**: Expected for operating system and I/O addresses.
 - **TTBR1**: Used for process-specific addresses.
 - **TTBCR**: Determines which TTBR to use on a TLB miss.
@@ -208,28 +208,23 @@ VMSAv6 supports two page table formats:
   - More access permissions
   - Marking of shared and non-shared regions
   - Marking of execute-never regions.
-### First-Level Descriptors(entries in the first-level translation table)
+### First-Level Descriptors(Entries in the first-level translation table)
 - When a virtual address is translated to a physical address, the MMU first looks at the first-level translation table.
 - The first-level descriptor can either directly point to a large section of physical memory (like a 1MB section), or it can point to a second-level translation table that handles smaller blocks of memory.
 
-Descriptor types based on bit values:
-- `0b00`: Unmapped addresses leading to a translation fault.
-- `0b10`: Section descriptor.
-- `0b01`: Pointer to a second-level table.
-- `0b11`: Reserved entry in VMSAv6.
-### Second-Level Descriptor
+The first-level translation table contains entries that can be one of several types:
+- **Section Descriptor**: This type of entry maps a full 1MB section of virtual address space directly to physical memory. It does not point to a second-level table but instead provides the physical base address of the section along with access permissions and other attributes.
+- **Supersection Descriptor**: Similar to a section descriptor, a supersection descriptor maps a larger block of memory (typically 16MB) and also does not point to a second-level table.
+- **Coarse Page Table Descriptor**: This entry does point to a second-level table, specifically a **coarse second-level page table**. Each entry in the coarse page table then maps a smaller portion of memory (typically 4KB pages).
+- **Fine Page Table Descriptor(OBSOLETE)**: This is similar to the coarse page table descriptor but allows for an even finer granularity of mapping (typically **1KB** pages) and thus points to a **fine seond-level page table** with more entries than the coarse table.
+### Second-Level Descriptor(Entries in the second-level translation table)
 - If the first-level descriptor points to a second-level translation table, the MMU then uses this table for further translation.
 - Second-level descriptors provide a finer granularity of memory management, allowing for smaller sections of memory to be individually controlled, such as 64KB large pages or 4KB small pages.
 - These descriptors are used to define more specific attributes of the memory region, such as access permissions, cache behavior, and whether the memory is buffered.
 
-The second-level descriptor - Coarse page table format, provides details on:
-- Implementation-defined behavior during page table walks.
-- How the translation table registers determine memory region attributes.
-- Ensuring proper memory access across different cache types.
-### Fields Description
-- **AP**: Access permission bits.
-- **APX**: Access permissions extension bit providing an extra access permission bit.
-- **Domain fields**: Domain fields are described in 'Memory access control' and 'Memory region attributes'.
-### Implementation Defined Bit
-- **IMP bit[9]**: Should be set to 0 unless implementation-defined functionality is enabled.
-
+## CP15 Registers (deprecated in ARMv8)
+- **Memory management**: This includes the control of the Memory Management Unit (MMU), Translation Lookaside Buffers (TLB), and cache control for instruction and data caches.
+- **Protection**: CP15 registers define and control the different protection regions in the memory to prevent unauthorized access.
+- **System identification**: These registers can hold information about the processor, such as the manufacturer ID, CPU ID, and version numbers.
+- **Performance monitoring**: Certain CP15 registers are used to monitor the performance of the CPU, including counting cache misses, instruction execution, and other performance metrics.
+- **Configuration**: CP15 registers allow the configuration of other system settings, like the endianess of data processing, interrupt handling, and so forth.
