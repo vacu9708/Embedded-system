@@ -1,8 +1,8 @@
 # Memory
 ## About the VMSA
 - **Virtual Memory System**: VMSA involves dynamically allocating memory and mapping it to physical addresses via a Memory Management Unit (MMU).
-- **Translation Table Walk**: This is the process of converting virtual addresses to physical ones.
-- **Translation Lookaside Buffers (TLBs)**: TLBs are specialized caches that help reduce the average cost of memory access by storing the results of recent translation table lookups.
+- **Translation Table Walk**: This is the process of converting virtual addresses to physical ones, searching page tables.
+- **Translation Lookaside Buffers (TLBs)**: TLBs store the results of recent translation table lookups. If a virtual address translation is in the TLB, the MMU can use it directly, avoiding a full table walk.
 #### Enhancements in ARMv6 (VMSA6)
 VMSA has been improved in ARMv6 to avoid the need for TLB invalidation on a context switch, thus improving performance.<br>
 The key enhancements include:
@@ -14,9 +14,8 @@ The key enhancements include:
 When the ARM CPU generates a memory access, the MMU performs a lookup for a modified virtual address in a TLB. This includes checking the current ASID in ARMv6 implementations.<br>
 - **Modified virtual address**: refers to a combination of the 32-bit virtual address along with additional bits for the Application Space Identifier (ASID), which provides a way to separate the address spaces of different processes.
 - **ASID (Address Space Identifier)**: Uniquely identifies a process's virtual memory space.
-- Harvard or unified TLBs are used depending on the implementation.
-- Instruction fetches use the instruction TLB and data accesses use the data TLB.
-- If no appropriate TLB entry is found, a translation table read is performed by hardware.
+- Instruction fetches use the *instruction TLB* and data accesses use the *data TLB*.
+- If no appropriate TLB entry is found, a translation table walk is performed by hardware.
 #### _Note_
 - Modified virtual address translations are globally mapped from ARMv6, considering the 32-bit modified virtual address plus ASID values when non-global address is accessed.
 - The FCSE mechanism is deprecated in ARMv6. Concurrent use of FCSE and ASID leads to unpredictable behavior.
