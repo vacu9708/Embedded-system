@@ -36,8 +36,10 @@ By default, R15 operates as a program counter, used for reading or writing the a
 This is due to the pipeline architecture of ARM processors, where instructions are pre-fetched.<br>
 
 ## Program Status Registers
-The Current Program Status Register (CPSR) is accessible in all processor modes. It contains condition code flags, interrupt disable bits, the current processor mode, and other status and control information.<br>
-Each exception mode also has a Saved Program Status Register (SPSR), that is used to preserve the value of the CPSR when the associated exception occurs.<br>
+- **Current Program Status Register(CPSR)**: Holds processor status, condition code flags, interrupt disable bits, processor mode, etc.
+- **Saved Program Status Register(SPSR)**: Holds the CPSR of the task before an exception occurred. Each exception mode has a SPSR.
+
+![image](https://github.com/vacu9708/Embedded-system/assets/67142421/a8d11d29-e894-4dab-aa30-fa40bdaacdd0)
 ### Types of PSR bits
 ![image](https://github.com/vacu9708/Embedded-system/assets/67142421/62c15732-41b0-4431-8a3c-22fc6feb9cb8)<br>
 - **Reserved bits**: Reserved for future expansion. Implementations must read these bits as 0 and ignore writes to them.
