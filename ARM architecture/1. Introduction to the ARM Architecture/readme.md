@@ -3,7 +3,7 @@
 
 ### Key Characteristics
 ARM is a Reduced Instruction Set Computer (**RISC**) architecture, which includes:
-- Large uniform register file.(In ARM's RISC architecture, there is a large set of registers, which are small, fast storage locations within the CPU. These registers are uniform, meaning they can all be used interchangeably for a wide range of instructions. This uniformity simplifies the instruction set and improves the speed of computation.)
+- Large uniform register file.(These registers are uniform, meaning they can all be used interchangeably for a wide range of instructions. This uniformity simplifies the instruction set and improves the speed of computation.)
 - Load/store architecture.(Data-processing operations (like addition, subtraction, etc.) are performed only on data in the registers, not directly on data in memory.)
 - Simple addressing modes.(Addressing modes refer to the ways in which instructions specify the location of data. The smaller number of simple addressing modes makes it easier to design the hardware to decode and execute instructions, which can lead to faster processing speeds.)
 - Uniform and fixed-length instruction fields, to simplify instruction decode.(to facilitate pipeline)
