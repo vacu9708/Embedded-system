@@ -55,7 +55,7 @@ Used for control flow alteration by writing the PC(Program Counter)
 ### A1.2.2 Data-Processing Instructions
 - **Arithmetic/Logic Instructions:** Perform operations on two source operands and write the result.
 - **Comparison Instructions:** Perform operations without writing the result, just updating condition flags.
-- **SIMD Instructions:** Treat operands as parallel 16-bit or 8-bit numbers (ARMv6).
+- **SIMD Instructions:** Single Instruction, Multiple Data.Treat operands as parallel 16-bit or 8-bit numbers (ARMv6).
 - **Multiply Instructions:** Various classes for different operations.
 
 ### A1.2.3 Status Register Transfer Instructions
