@@ -13,7 +13,7 @@ The key enhancements include:
 ## Memory Access Sequence
 When the ARM CPU generates a memory access, the MMU performs a lookup for a modified virtual address in a TLB. This includes checking the current ASID in ARMv6 implementations.<br>
 - **Modified virtual address**: refers to a combination of the 32-bit virtual address along with additional bits for the Application Space Identifier (ASID), which provides a way to separate the address spaces of different processes.
-- **ASID (Address Space Identifier)**: Uniquely identifies a process's virtual memory space.
+- **ASID (Address Space Identifier)**: Uniquely identifies a process's virtual memory space. It is used to distinguish between memory pages with the same virtual address but used by different tasks.
 - Instruction fetches use the *instruction TLB* and data accesses use the *data TLB*.
 - If no appropriate TLB entry is found, a translation table walk is performed by hardware.
 #### _Note_
