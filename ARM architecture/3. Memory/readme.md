@@ -77,12 +77,6 @@ Access to a memory region is controlled by the access permission and domain bits
   - b'00: No access - Any attempt to access memory in that domain will generate a domain fault.
   - b'01: Client - Accesses are allowed, but they must follow the access permissions set in the TLB entries for that domain.
   - b'11: Manager - Accesses are allowed without checking the TLB entries. This gives manager programs full control over the domain, but also bypasses security checks.
-#### Clients and Managers:
-- **Client and Manager**: Programs can be clients of some domains and managers of others. This allows for flexible memory protection. For example, a program might be a client of the domain containing its own code and data, but a manager of a domain containing shared resources.
-- **Client Domain**: Access to memory regions within a client domain is checked against the domain access control and the page or section access permissions. If access is not allowed, a fault is generated.
-- **Manager Domain**: Access checks for memory regions in a manager domain are bypassed
-#### Benefits of Domains:
-- Domains provide a way to isolate programs from each other, which can help to improve security and stability.
 
 ## Memory region attributes
 ### Prior to VMSAv6(Problem)
