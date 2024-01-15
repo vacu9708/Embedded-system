@@ -24,19 +24,14 @@ When the ARM CPU generates a memory access, the MMU performs a lookup for a modi
 Each TLB entry contains a modified virtual address, a page size, a physical address, and memory properties. It's associated with an application space identifier (ASID) or marked as global.<br>
 - A match occurs if the higher order bits of the modified virtual address match and the ASID is the same.
 - The behavior of a TLB is unpredictable if multiple entries match at any time.
-#### TLBs can store entries based on different block sizes:
-- Supersections: 16MB
-- Sections: 1MB
-- Large pages: 64KB
-- Small pages: 4KB
-#### _Note_
-- Tiny (1KB) pages are not supported in VMSA6.<br>
-
+- 
 ## Enabling and disabling the MMU
 ### Controlling the MMU:
 - The MMU is enabled and disabled by setting or clearing the M bit (bit[0]) in register 1 of the System Control coprocessor (CP15).
 - It's disabled by default upon reset.
 ### Memory Access Behavior When MMU is Disabled:
+#### Prior knowledge
+**Strongly ordered memory**: Memory accesses to Strongly Ordered memory regions are strictly ordered. This means that any access (read or write) to a Strongly Ordered memory location must be completed before any subsequent access can begin. This order is maintained across all processors in a multi-core system.
 #### Data Accesses:
 - Treated as uncacheable and strongly ordered.
 - Unexpected data cache hit behavior varies depending on implementation.
