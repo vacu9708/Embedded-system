@@ -67,7 +67,7 @@ Access to a memory region is controlled by the access permission and domain bits
 ### Access permissions
 - **Permission fault**: If an access is made to an area of memory without the required permissions, a Permission Fault is raised.
 - **Access permissions**: The access permissions are determined by a combination of the AP and APX bits in the page table.
-### Domains
+### Domains(deprecated)
 - A domain is a named collection of memory regions. The ARM architecture supports up to 16 domains.
 - Each page table entry and TLB entry (which map virtual memory to physical memory) contains a field that specifies the domain the entry belongs to.
 - Access to each domain is controlled by a two-bit field in the Domain Access Control Register (DACR).
