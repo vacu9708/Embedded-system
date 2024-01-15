@@ -24,7 +24,7 @@ When the ARM CPU generates a memory access, the MMU performs a lookup for a modi
 Each TLB entry contains a modified virtual address, a page size, a physical address, and memory properties. It's associated with an application space identifier (ASID) or marked as global.<br>
 - A match occurs if the higher order bits of the modified virtual address match and the ASID is the same.
 - The behavior of a TLB is unpredictable if multiple entries match at any time.
-- 
+
 ## Enabling and disabling the MMU
 ### Controlling the MMU:
 - The MMU is enabled and disabled by setting or clearing the M bit (bit[0]) in register 1 of the System Control coprocessor (CP15).
