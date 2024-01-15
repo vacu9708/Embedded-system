@@ -79,8 +79,8 @@ Access to a memory region is controlled by the access permission and domain bits
   - b'11: Manager - Accesses are allowed without checking the TLB entries. This gives manager programs full control over the domain, but also bypasses security checks.
 #### Clients and Managers:
 - **Client and Manager**: Programs can be clients of some domains and managers of others. This allows for flexible memory protection. For example, a program might be a client of the domain containing its own code and data, but a manager of a domain containing shared resources.
-- **Client permission**: Client programs are subject to the access permissions set in the TLB entries for the domain they are accessing. This helps to prevent unauthorized access to memory.
-- **Manager permission**: Manager programs have full control over the domains they manage, including the ability to change the access permissions in the TLB entries. This gives them more power, but also makes them more vulnerable to attack.
+- **Client Domain**: Access to memory regions within a client domain is checked against the domain access control and the page or section access permissions. If access is not allowed, a fault is generated.
+- **Manager Domain**: Access checks for memory regions in a manager domain are bypassed
 #### Benefits of Domains:
 - Domains provide a way to isolate programs from each other, which can help to improve security and stability.
 
