@@ -5,14 +5,16 @@ AMBA is a widely used interconnection standard for connecting functional blocks 
 - **Simplicity and Efficiency**: The APB is simpler compared to other buses in the AMBA family. It is optimized for minimal power consumption and reduced complexity of peripherals. This makes it ideal for simple, lower-speed tasks where high throughput is not a critical requirement.
 - **Use Cases**: APB is commonly used for interfacing with low-speed peripherals like keyboards, mouse devices, UARTs, SPI (Serial Peripheral Interface) controllers(control signals don't require high speed).
 
+# Prior knowledge
 ## Timing diagram conventions
 ![image](https://github.com/vacu9708/Embedded-system/assets/67142421/3790f151-9edd-4f73-bfe7-688a5ebd81aa)<br>
 - **Bus change**: This indicates that multiple bits on the bus are changing simultaneously aside from just a single binary digit changing
 - **Transient**: This is a temporary, intermediate state during the transition of a signal from one stable state to another. It's a period where the signal is neither high nor low
 - **Bus to high impedance**: This transition shows the bus moving to a high impedance state, which is effectively an electrical disconnection. This state is used when multiple devices can drive the bus, but only one should do so at a time to avoid conflicts.
-
 ## APB signal descriptions
 ![image](https://github.com/vacu9708/Embedded-system/assets/67142421/8f10bae0-5a3f-402f-ad1c-8222b0c96050)
+
+---
 
 ## 2.1 Write Transfers
 Write transfers can be categorized into two types:
