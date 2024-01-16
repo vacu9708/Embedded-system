@@ -1,4 +1,3 @@
-https://chat.openai.com/c/90ed3bfd-879e-43ee-9459-f8d110edec1f
 # APB
 The APB (Advanced Peripheral Bus) is part of the AMBA (Advanced Microcontroller Bus Architecture) suite of protocols.<br>
 AMBA is a widely used interconnection standard for connecting functional blocks (like CPUs, memory units, and peripherals).
@@ -72,4 +71,4 @@ This diagram visually represents the transitions between the different states of
   - **To ACCESS**: The bus only remains in this state for one clock cycle and moves to the `ACCESS` state on the next clock's rising edge.
 - **ACCESS**: The enable signal `PENABLE` is asserted in the `ACCESS` state. Stable signals(address, write, select, and write data) are crucial during the transition from SETUP to ACCESS. The exit from the ACCESS state is dependent on the PREADY signal from the peripheral (slave device).
   - **Remaining in ACCESS**: If `PREADY` is low, the bus remains in the `ACCESS` state.
-  - **Exit from ACCESS**: If high, the bus either returns to the IDLE state if no more transfers are needed ***OR*** moves directly to the SETUP state if another transfer is pending.
+  - **Exit from ACCESS**: If high, the bus either returns to the `IDLE` state if no more transfers are needed ***OR*** moves directly to the `SETUP` state if another transfer is pending.
