@@ -32,7 +32,6 @@ This figure illustrates a basic write transfer process without wait states. The 
 The transfer completes at the end of this cycle, with all signals remaining valid throughout the Access phase.
 
 ### 2.1.2 With wait states
-#### Figure 2-2: Write Transfer with wait states
 ![image](https://github.com/vacu9708/Embedded-system/assets/67142421/c505560d-11bf-4bd2-a303-0040d8cc97d5)<br>
 This figure shows a write transfer that includes wait states, extending the process to T6.<br>
 The `PREADY` signal can extend the transfer by driving `PREADY` LOW when `PENABLE` is HIGH.
