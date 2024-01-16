@@ -22,7 +22,6 @@ Write transfers can be categorized into two types:
 - With wait states
 
 ### 2.1.1 With no wait states
-#### Figure 2-1: Write Transfer with no wait states
 ![image](https://github.com/vacu9708/Embedded-system/assets/67142421/2551b682-e344-436e-88f2-accb65248134)<br>
 This figure illustrates a basic write transfer process without wait states. The process follows a sequence of clock cycles (T0 to T4), where signals are asserted or deasserted at the rising edge of the clock.
 - **At T0**: The process is idle, waiting for the next clock cycle.
