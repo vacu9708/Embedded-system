@@ -42,3 +42,10 @@ Illustrates the structure of a typical system that includes multiple master and 
 - **Register Slices**: These can be inserted into any channel to help with timing and isolation, potentially adding a cycle of latency but allowing for a **trade-off** between latency(register slice) and maximum frequency of operation(direct, fast).
 
 # Channel Handshake
+## Handshake Process (3.1)
+- **Purpose**: The handshake process in AXI is used to synchronize data and control information between the master and slave devices.(like TCP handshake)
+- **Mechanism**: It uses a two-way VALID/READY flow control system to ensure data transfer occurs at an appropriate rate without loss or error.
+- **Signals**:
+  - **VALID**: Indicates data or control information is available from the source.
+  - **READY**: Indicates the destination can accept the data or control information.
+- **Conditions**: Both VALID and READY signals must be high for the data transfer to take place.
